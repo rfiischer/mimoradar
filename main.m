@@ -99,6 +99,9 @@ for i = 1:size(scattererPoints, 1)
 
 end
 
+% Coherence of A before FFT
+fprintf('Coherence of A before ifft: %f\n', coherence(A));
+
 % We have that Y = ifft2(X), Y and X are 2D matrices 
 % If we flatten X, we can write flatten(Y) = iF * flatten(X)
 % Then, each row of iF corresponds to an element Y(p, q), where p changes
@@ -132,3 +135,25 @@ iF = 1 / scatterer_grid_size ^ 2 * exp(exponent);
 
 % Get sampling matrix (after ifft)
 A = A * iF;
+
+% Coherence of A after FFT
+fprintf('Coherence of A after ifft: %f\n', coherence(A));
+
+% Generate signal vector x 
+N = size(A, 2);
+s = floor(sparsity * N);
+x = zeros(N, 1);
+support = randperm(rStr, N, s);
+x(support) = randn(rStr, s, 1);
+
+% Sample
+y = A * x;
+[xHat, S] = omp(y, A);
+
+% Compare
+fprintf('Support:')
+support
+fprintf('Recovered Support:')
+S
+
+fprintf('Error: %f', sum(abs(xHat - x) .^ 2))
