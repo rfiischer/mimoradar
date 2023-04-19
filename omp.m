@@ -1,14 +1,16 @@
-function [xHat, S] = omp(y, A)
+function [xHat, S] = omp(y, A, tol)
 %OMP Performs OMP given measurements vector y and sensing matrix A
-
+arguments
+    y; A;
+    tol = 1e-10;
+end
 % Initialize algorithm
 xHat = zeros(size(A, 2), 1);
 S = [];
 
 % Begin
 i = 0;
-while y ~= A * xHat
-% while sum(abs(y - A * xHat) .^ 2) > 1e-10
+while any(abs(y - A * xHat) ./ abs(y) > tol)
     i = i + 1;
 
     % Get index of smallest error 
