@@ -10,7 +10,7 @@ A = A ./ normColumns;
 % Contains in element (i, j) the product ai' * aj
 coherenceMatrix = A' * A;
 
-coherenceCandidates = coherenceMatrix .* (1 - eye(size(coherenceMatrix, 1)));
-c = max(max(abs(coherenceCandidates)));
+coherenceCandidates = abs(coherenceMatrix .* (1 - eye(size(coherenceMatrix, 1))));
+c = max(coherenceCandidates(:));
 end
 

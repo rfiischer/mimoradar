@@ -4,7 +4,7 @@ clear;
 lambda = 0.5;                   % wavelength (cm)
 size_of_hand = 16;              % hand box size (cm)
 scatterer_grid_size = 32;       % number of scatterers in each axis 
-grid_height = 100;              % grid height (cm)
+grid_height = 30;               % grid height (cm)
 num_antennas = 46;              % number of antennas in array (on each side)
 sparsity = 0.1;                 % sparsity of scatterer grid (%)
 num_eff_antennas = 20;          % effective number of antennas (both sides) chosen randomly 
@@ -144,16 +144,31 @@ N = size(A, 2);
 s = floor(sparsity * N);
 x = zeros(N, 1);
 support = randperm(rStr, N, s);
-x(support) = randn(rStr, s, 1);
+x(support) = 1 / sqrt(2) * (randn(rStr, s, 1) + 1i * randn(rStr, s, 1));
 
 % Sample
 y = A * x;
 [xHat, S] = omp(y, A);
 
 % Compare
-fprintf('Support:')
-support
-fprintf('Recovered Support:')
-S
+fprintf('Elements in S^hat but not in S\n')
+d1 = setdiff(S, support);
+disp(d1)
+fprintf('xHat in these entries\n')
+disp(xHat(d1))
 
-fprintf('Error: %f', sum(abs(xHat - x) .^ 2))
+fprintf('Elements in S but not in S^hat\n')
+d2 = setdiff(support, S);
+disp(d2)
+fprintf('x in these entries\n')
+disp(xHat(d2))
+
+fprintf('Error: %e\n', sum(abs(xHat - x) .^ 2))
+
+xHatSpace = ifft2(reshape(xHat, scatterer_grid_size, scatterer_grid_size));
+figure
+imagesc(abs(xHatSpace))
+figure
+imagesc(angle(xHatSpace))
+figure
+imagesc(abs(reshape(xHat, scatterer_grid_size, scatterer_grid_size)))
