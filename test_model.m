@@ -8,9 +8,10 @@ grid_height = 30;               % grid height (cm)
 num_antennas = 46;              % number of antennas in array (on each side)
 sparsity = 0.1;                 % sparsity of scatterer grid (%)
 num_eff_antennas = 20;          % effective number of antennas (both sides) chosen randomly 
+random_seed = 0;                % 'shuffle' for random; any int for reproducibility
 
 % Random generator
-rStr = RandStream('mcg16807', 'Seed', 0);
+rStr = RandStream('mcg16807', 'Seed', random_seed);
 
 % Get scatterer grid positions 
 scattererPoints = xy_grid(size_of_hand, ...
@@ -71,6 +72,7 @@ legend;
 xlabel('x (cm)');
 ylabel('y (cm)');
 zlabel('z (cm)');
+title('Setup');
 daspect([1, 1, 1]);
 
 % Get distances
@@ -98,6 +100,19 @@ for i = 1:size(scattererPoints, 1)
     A(:, i) = kron(a(:, i), b(:, i));
 
 end
+
+% Plot correlation of columns
+% Here we do PCA in a 3D space (interpreted as color)
+B = real_pca(A, 3);
+B = color_space(B);
+figure;
+scatter3(B(:, 1), B(:, 2), B(:, 3));
+title('3D Projection of Columns of A');
+daspect([1, 1, 1]);
+figure;
+image(reshape(B, scatterer_grid_size, scatterer_grid_size, []));
+title('Color Plot');
+daspect([1, 1, 1]);
 
 % Coherence of A before FFT
 fprintf('Coherence of A before ifft: %f\n', coherence(A));
@@ -136,15 +151,26 @@ iF = 1 / scatterer_grid_size ^ 2 * exp(exponent);
 % Get sampling matrix (after ifft)
 A = A * iF;
 
+% Plot correlation of columns
+% Here we do PCA in a 3D space (interpreted as color)
+B = real_pca(A, 3);
+B = color_space(B);
+figure;
+scatter3(B(:, 1), B(:, 2), B(:, 3));
+title('3D Projection of Columns of A - After IFFT');
+daspect([1, 1, 1]);
+figure;
+image(reshape(B, scatterer_grid_size, scatterer_grid_size, []));
+title('Color Plot - After IFFT');
+daspect([1, 1, 1]);
+
 % Coherence of A after FFT
 fprintf('Coherence of A after ifft: %f\n', coherence(A));
 
 % Generate signal vector x 
 N = size(A, 2);
 s = floor(sparsity * N);
-x = zeros(N, 1);
-support = randperm(rStr, N, s);
-x(support) = 1 / sqrt(2) * (randn(rStr, s, 1) + 1i * randn(rStr, s, 1));
+[x, support] = sparse_x(rStr, N, s, true);
 
 % Sample
 y = A * x;
@@ -168,7 +194,13 @@ fprintf('Error: %e\n', sum(abs(xHat - x) .^ 2))
 xHatSpace = ifft2(reshape(xHat, scatterer_grid_size, scatterer_grid_size));
 figure
 imagesc(abs(xHatSpace))
+title('|x| in Space Domain')
+daspect([1, 1, 1])
 figure
 imagesc(angle(xHatSpace))
+title('angle(x) in Space Domain')
+daspect([1, 1, 1])
 figure
 imagesc(abs(reshape(xHat, scatterer_grid_size, scatterer_grid_size)))
+title('|x| in Frequency Domain')
+daspect([1, 1, 1])
