@@ -1,14 +1,21 @@
 clear;
 
+% File parameters
+mName = mfilename('fullpath');
+fileName = get_name(mName);
+
 % Random generator
 rStr = RandStream('mcg16807', 'Seed', 0);
 
 nIter = 1000;
 N = 1024;
 s = 102;
+step = 2;
+start = 170;
+stop = 260;
 
 accuracy = zeros(N, 1);
-for M = 1:N
+for M = start:step:stop
 
     right = 0;
 
@@ -33,13 +40,6 @@ for M = 1:N
     end
 
     accuracy(M) = right / nIter;
+    save(fileName, 'nIter', 'N', 's', 'accuracy', 'step', 'start', 'stop');
 
 end
-
-if ~exist('results', 'dir')
-   mkdir('results');
-end
-
-mName = mfilename('fullpath');
-fileName = get_name(mName);
-save(fileName, 'nIter', 'N', 's', 'accuracy');
