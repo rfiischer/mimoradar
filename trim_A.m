@@ -1,9 +1,8 @@
-function A = trim_A(A, txInd, rxInd)
+function A = trim_A(A, txInd, rxInd, numRX)
 %TRIM_A Given txInd and rxInd, only select the rows containing these
 %antennas
 
-A = A(rxInd, txInd, :);
-A = reshape(A, [], size(A, 3));
+A = A((repelem(txInd, length(rxInd), 1) - 1) * numRX + repmat(rxInd, length(txInd), 1), :);
 
 end
 

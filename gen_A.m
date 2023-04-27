@@ -1,4 +1,5 @@
-function A = gen_A(lambda, size_of_hand, scatterer_grid_size, grid_height, num_antennas)
+function [A, numTX, numRX, scattererPoints, txPoints, rxPoints] = gen_A(lambda, ...
+    size_of_hand, scatterer_grid_size, grid_height, num_antennas)
 %GEN_A Generate sampling matrix A
 
 % Get scatterer grid positions 
@@ -67,9 +68,6 @@ for i = 1:size(scattererPoints, 1)
     A(:, i) = kron(a(:, i), b(:, i));
 
 end
-
-% Each column is one TX
-A = reshape(A, numTX, numRX, []);
 
 end
 
