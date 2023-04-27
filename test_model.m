@@ -55,10 +55,10 @@ rx2 = xy_grid((num_antennas - 1) * lambda / 2, ...
 rxPoints = [rx1; rx2];
 
 % Pick random antennas
-txPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas);
+txPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas)';
 txPoints = txPoints(txPerm, :);
 
-rxPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas);
+rxPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas)';
 rxPoints = rxPoints(rxPerm, :);
 
 % Plot setup
@@ -101,6 +101,11 @@ for i = 1:size(scattererPoints, 1)
 
 end
 
+% Compare with function 
+Af = gen_A(lambda, size_of_hand, scatterer_grid_size, grid_height, num_antennas);
+Af = trim_A(Af, txPerm, rxPerm);
+fprintf('max|A - Af|: %e\n', max(max(abs(Af - A))));
+
 % Plot correlation of columns
 % Here we do PCA in a 3D space (interpreted as color)
 B = real_pca(A, 3);
@@ -137,6 +142,10 @@ Q = K';
 exponent = 1i * 2 * pi * (J .* P / scatterer_grid_size + K .* Q / scatterer_grid_size);
 iF = 1 / scatterer_grid_size ^ 2 * exp(exponent);
 
+% Compare with function
+iFf = gen_iF(scatterer_grid_size);
+fprintf('max|iF - iFf|: %e\n', max(max(abs(iFf - iF))));
+
 % Alternative way (used to check the above)
 % F = zeros(scatterer_grid_size ^ 2, scatterer_grid_size ^ 2);
 % for i = 1:scatterer_grid_size
@@ -149,11 +158,11 @@ iF = 1 / scatterer_grid_size ^ 2 * exp(exponent);
 % iF2 = inv(F);
 
 % Get sampling matrix (after ifft)
-A = A * iF;
+AiF = A * iF;
 
 % Plot correlation of columns
 % Here we do PCA in a 3D space (interpreted as color)
-B = real_pca(A, 3);
+B = real_pca(AiF, 3);
 B = color_space(B);
 figure;
 scatter3(B(:, 1), B(:, 2), B(:, 3));
@@ -165,16 +174,16 @@ title('Color Plot - After IFFT');
 daspect([1, 1, 1]);
 
 % Coherence of A after FFT
-fprintf('Coherence of A after ifft: %f\n', coherence(A));
+fprintf('Coherence of A after ifft: %f\n', coherence(AiF));
 
 % Generate signal vector x 
-N = size(A, 2);
+N = size(AiF, 2);
 s = floor(sparsity * N);
 [x, support] = sparse_x(rStr, N, s, true);
 
 % Sample
-y = A * x;
-[xHat, S] = omp(y, A);
+y = AiF * x;
+[xHat, S] = omp(y, AiF);
 
 % Compare
 fprintf('Elements in S^hat but not in S\n')
