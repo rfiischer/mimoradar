@@ -35,7 +35,6 @@ for i = 1:numIter
     rxPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas)';
 
     ATrim = trim_A(AiF, txPerm, rxPerm, numRX);
-    ANorm = sqrt(sum(abs(ATrim) .^ 2));
 
     co(i) = coherence(ATrim);
 
