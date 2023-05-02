@@ -22,32 +22,10 @@ fileName = get_name(mName);
     scatterer_grid_size, grid_height, num_antennas);
 iF = gen_iF(scatterer_grid_size);
 AiF = A * iF;
-N = size(A, 2);
 
-co = zeros(numIter, 1);
-minCand = 1;
-ACand = 0;
-for i = 1:numIter
-    fprintf('i: %d\n', i);
-
-    % Pick random antennas
-    txPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas)';
-    rxPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas)';
-
-    ATrim = trim_A(AiF, txPerm, rxPerm, numRX);
-
-    co(i) = coherence(ATrim);
-
-    if co(i) < minCand
-        minCand = co(i);
-        ACand = ATrim;
-        save(fileName, "lambda", "size_of_hand", "scatterer_grid_size", "grid_height", ...
-            "num_antennas", "num_eff_antennas", "random_seed", "numIter", "co", "minCand", "ACand", ...
-            "txPerm", "rxPerm", "scattererPoints", "txPoints", "rxPoints", "i");
-    end
-    
-end
+[ACand, AMean, co, minCand, meanCand, txPerm, rxPerm, i] = random_search_A(rStr, AiF, numRX, ...
+    num_antennas, num_eff_antennas, numIter, fileName, true);
 
 save(fileName, "lambda", "size_of_hand", "scatterer_grid_size", "grid_height", ...
             "num_antennas", "num_eff_antennas", "random_seed", "numIter", "co", "minCand", "ACand", ...
-            "txPerm", "rxPerm", "scattererPoints", "txPoints", "rxPoints", "i");
+            "AMean", "meanCand", "txPerm", "rxPerm", "scattererPoints", "txPoints", "rxPoints", "i");
