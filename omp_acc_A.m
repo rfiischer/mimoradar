@@ -38,8 +38,8 @@ else
 end
 
 % 'A' database directory
-if ~exist('A_database\', 'dir')
-    mkdir('A_database\')
+if ~exist('A_database/', 'dir')
+    mkdir('A_database/')
 end
 
 for Neff = start:step:stop
@@ -49,8 +49,8 @@ for Neff = start:step:stop
     M = Neff ^ 2;
 
     if strcmp(sim_type, 'best')
-        fileNameA = fullfile('A_database', sprintf('A_%d', Neff));
-        if ~exist(fullfile('A_database', fileNameA), 'file')
+        fileNameA = fullfile('A_database', sprintf('A_%d.mat', Neff));
+        if ~exist(fileNameA, 'file')
             [ACand, AMean] = random_search_A(rStr, AiF, numRX, num_antennas, Neff, nSearchIter, ...
                 fileNameA);
 

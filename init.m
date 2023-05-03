@@ -1,1 +1,1 @@
-addpath('functions\');
+addpath('functions/');
