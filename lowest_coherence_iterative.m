@@ -1,3 +1,5 @@
+% Algorithm to iteratively find a M, N matrix with the smallest coherence
+% possible
 clear;
 
 % File parameters
@@ -5,26 +7,27 @@ mName = mfilename('fullpath');
 fileName = get_name(mName);
 
 % Parameters
-M = 3;
-N = 4;
-nIter = 5000;
+M = 40;
+N = 100;
+complex = true;
+nIter = 10000;
 alpha = 9e-3;           % gradient scaling factor
 tol = 1e-3;             % tolerance on plateau (reduce alpha)
 pauseTime = 0.0;        % pause time for animation plot
-rStr = RandStream('mcg16807', 'Seed', 0);
+rStr = RandStream('mcg16807', 'Seed', 'shuffle');
 
 % Create A
-A = gaussian_A(rStr, M, N, false);
+A = gaussian_A(rStr, M, N, complex);
 An = A ./ vecnorm(A);
 
 % Plot if 2D or 3D
 h = 0;
-if M == 2
+if M == 2 && ~complex
     h = quiver(zeros(1, N), zeros(1, N), An(1, :), An(2, :));
     xlim([-1, 1]);
     ylim([-1, 1]);
     daspect([1, 1, 1]);
-elseif M == 3
+elseif M == 3 && ~complex
     h = quiver3(zeros(1, N), zeros(1, N), zeros(1, N), An(1, :), An(2, :), An(3, :));
     xlim([-1, 1]);
     ylim([-1, 1]);
@@ -47,11 +50,11 @@ for i = 1:nIter
 
     % Find columns with largest coherence
     [col1, col2] = ind2sub(size(C), idx);
-    signFactor = sign(C(col1, col2));
+    signFactor = angle(C(col1, col2));
 
     % Perform gradient descent
-    An(:, col1) = An(:, col1) - alpha * signFactor * An(:, col2);
-    An(:, col2) = An(:, col2) - alpha * signFactor * An(:, col1);
+    An(:, col1) = An(:, col1) - alpha * exp(- 1j * signFactor) * An(:, col2);
+    An(:, col2) = An(:, col2) - alpha * exp(+ 1j * signFactor) * An(:, col1);
 
     % Normalize A
     An = An ./ vecnorm(An);
@@ -64,15 +67,17 @@ for i = 1:nIter
     end
 
     % Plot animation if 2D or 3D
-    if (M == 2 || M == 3) && ishandle(h) && (pauseTime ~= 0)
+    if (M == 2 || M == 3) && ~complex && (pauseTime ~= 0)
         pause(pauseTime);
-        h.UData = An(1, :);
-        h.VData = An(2, :);
-        if N == 3
-            h.WData = An(3, :);
+        if ishandle(h)
+            h.UData = real(An(1, :));
+            h.VData = real(An(2, :));
+            if M == 3
+                h.WData = real(An(3, :));
+            end
+        else
+            break
         end
-    elseif ~ishandle(h)
-       break
     end
 
 end
@@ -86,15 +91,15 @@ plot(lossMax);
 A = An .* vecnorm(A);
 fprintf('Coherence: %.6f\n', coherence(A));
 
-if M == 2
+if M == 2 && ~complex
     figure;
-    h = quiver(zeros(1, N), zeros(1, N), A(1, :), A(2, :));
+    h = quiver(zeros(1, N), zeros(1, N), real(A(1, :)), real(A(2, :)));
     xlim([-1, 1]);
     ylim([-1, 1]);
     daspect([1, 1, 1]);
-elseif M == 3
+elseif M == 3 && ~complex
     figure;
-    h = quiver3(zeros(1, N), zeros(1, N), zeros(1, N), A(1, :), A(2, :), A(3, :));
+    h = quiver3(zeros(1, N), zeros(1, N), zeros(1, N), real(A(1, :)), real(A(2, :)), real(A(3, :)));
     xlim([-1, 1]);
     ylim([-1, 1]);
     zlim([-1, 1]);
