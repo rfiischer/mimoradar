@@ -8,7 +8,7 @@ if ~exist('results', 'dir')
 end
 candidateName = fullfile(path, 'results', [name '_0.mat']);
 i = 1;
-while exist(candidateName, "file")
+while exist(candidateName, 'file')
     candidateName = fullfile(path, 'results', [name sprintf('_%d.mat', i)]);
     i = i + 1;
 end

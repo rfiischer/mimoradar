@@ -43,8 +43,8 @@ for i = 1:numIter
         minCand = co(i);
         ACand = ATrim;
         if fileName
-            save(fileName, "num_antennas", "num_eff_antennas", "numIter", "co", "minCand", "ACand", ...
-                "txPerm", "rxPerm", "i", "meanCand", "AMean");
+            save(fileName, 'num_antennas', 'num_eff_antennas', 'numIter', 'co', 'minCand', 'ACand', ...
+                'txPerm', 'rxPerm', 'i', 'meanCand', 'AMean');
         end
     end
     

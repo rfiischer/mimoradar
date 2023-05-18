@@ -3,9 +3,9 @@ function plot_setup(scattererPoints, txPoints, rxPoints)
 
 figure;
 hold on;
-scatter3(scattererPoints(:, 1), scattererPoints(:, 2), scattererPoints(:, 3), "blue", "*", "DisplayName", "Scatterers");
-scatter3(txPoints(:, 1), txPoints(:, 2), txPoints(:, 3), "green", "s", "DisplayName", "TX");
-scatter3(rxPoints(:, 1), rxPoints(:, 2), rxPoints(:, 3), "red", "x", "DisplayName", "RX");
+scatter3(scattererPoints(:, 1), scattererPoints(:, 2), scattererPoints(:, 3), 'blue', '*', 'DisplayName', 'Scatterers');
+scatter3(txPoints(:, 1), txPoints(:, 2), txPoints(:, 3), 'green', 's', 'DisplayName', 'TX');
+scatter3(rxPoints(:, 1), rxPoints(:, 2), rxPoints(:, 3), 'red', 'x', 'DisplayName', 'RX');
 hold off;
 view(45, 45);
 legend;
