@@ -17,6 +17,7 @@ sim_type = 'best';              % choose between 'best' to compute the best
                                 % and average performance, or 'random' to
                                 % make A random
 nSearchIter = 1000;             % how many iterations of random search for good A
+experimentIdx = 0;              % experiment identifier 
 
 % Random generator
 rStr = RandStream('mcg16807', 'Seed', random_seed);
@@ -42,9 +43,13 @@ else
 end
 
 % 'A' database directory
-if ~exist('A_database/', 'dir')
-    mkdir('A_database/')
+baseName = sprintf('A_database_%d//', experimentIdx);
+if ~exist(baseName, 'dir')
+    mkdir(baseName)
 end
+save(fullfile(baseName, 'parameters.mat'), ...
+    'lambda', 'scatterer_grid_size', 'scatterer_spacing', 'grid_height', ...
+    'num_antennas', 'antenna_spacing', 'random_seed', 'nSearchIter')
 
 for Neff = start:step:stop
 
