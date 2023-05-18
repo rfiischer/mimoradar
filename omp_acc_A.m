@@ -58,7 +58,7 @@ for Neff = start:step:stop
     M = Neff ^ 2;
 
     if strcmp(sim_type, 'best')
-        fileNameA = fullfile('A_database', sprintf('A_%d.mat', Neff));
+        fileNameA = fullfile(baseName, sprintf('A_%d.mat', Neff));
         if ~exist(fileNameA, 'file')
             [ACand, AMean] = random_search_A(rStr, AiF, numRX, num_antennas, Neff, nSearchIter, ...
                 fileNameA);
