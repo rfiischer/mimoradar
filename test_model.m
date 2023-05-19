@@ -112,6 +112,17 @@ image(reshape(B, scatterer_grid_size, scatterer_grid_size, []));
 title('Color Plot');
 daspect([1, 1, 1]);
 
+% Plot correlation in space domain
+figure;
+ANorm = A ./ vecnorm(A);
+pivotI = scatterer_grid_size / 2;
+pivotJ = scatterer_grid_size / 2;
+pivot = (pivotI - 1) * scatterer_grid_size + pivotJ;
+correlations = abs(ANorm(:, pivot)' * ANorm);
+imagesc(reshape(correlations, scatterer_grid_size, scatterer_grid_size));
+title('Spacial Correlation');
+daspect([1, 1, 1]);
+
 % Coherence of A before FFT
 fprintf('Coherence of A before ifft: %f\n', coherence(A));
 
@@ -164,6 +175,17 @@ daspect([1, 1, 1]);
 figure;
 image(reshape(B, scatterer_grid_size, scatterer_grid_size, []));
 title('Color Plot - After IFFT');
+daspect([1, 1, 1]);
+
+% Plot correlation in frequency domain
+figure;
+ANorm = AiF ./ vecnorm(AiF);
+pivotI = scatterer_grid_size / 2;
+pivotJ = scatterer_grid_size / 2;
+pivot = (pivotI - 1) * scatterer_grid_size + pivotJ;
+correlations = abs(ANorm(:, pivot)' * ANorm);
+imagesc(reshape(correlations, scatterer_grid_size, scatterer_grid_size));
+title('Frequency Correlation');
 daspect([1, 1, 1]);
 
 % Coherence of A after FFT
