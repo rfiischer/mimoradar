@@ -106,8 +106,8 @@ for Neff = start:step:stop
             % Progress
             fprintf('Iter: %d, M = %d\n', i, M);
     
-            txPerm = randperm(rStr, 2 * num_antennas, Neff)';
-            rxPerm = randperm(rStr, 2 * num_antennas, Neff)';
+            txPerm = randperm(rStr, 2 * num_antennas, Neff);
+            rxPerm = randperm(rStr, 2 * num_antennas, Neff);
             ATrim = trim_A(AiF, txPerm, rxPerm, numRX);
     
             % Generate sparse x

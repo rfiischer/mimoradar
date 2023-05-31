@@ -20,8 +20,8 @@ for i = 1:numIter
     end
 
     % Pick random antennas
-    txPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas)';
-    rxPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas)';
+    txPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas);
+    rxPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas);
 
     % Get subset of A
     ATrim = trim_A(AiF, txPerm, rxPerm, numRX);

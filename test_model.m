@@ -56,10 +56,10 @@ rx2 = xy_grid(antenna_spacing, ...
 rxPoints = [rx1; rx2];
 
 % Pick random antennas
-txPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas)';
+txPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas);
 txPoints = txPoints(txPerm, :);
 
-rxPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas)';
+rxPerm = randperm(rStr, 2 * num_antennas, num_eff_antennas);
 rxPoints = rxPoints(rxPerm, :);
 
 % Plot setup
