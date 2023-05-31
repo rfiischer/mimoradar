@@ -33,7 +33,7 @@ for i = 1:nIter
         f = figure;
         hold on;
         [X, Y] = meshgrid(1:grid_size);
-        sc = scatter(X(:), Y(:), 100, abs(xHat - x), 'filled', 's', 'DisplayName', '$|\hat{x} - x|$');
+        sc = scatter(X(:), Y(:), 100, abs(xHat - x), 'filled', 's');
         colormap(f, 'hot');
 
         leftOut = supp(~ismember(supp, suppHat));
@@ -58,11 +58,13 @@ for i = 1:nIter
         set(gca, 'Color', [0, 0, 0]);
         xlim([0, grid_size + 1]);
         ylim([0, grid_size + 1]);
+        title('$|\hat{x} - x|$', 'Interpreter', 'latex');
         colorbar;
 
         f2 = figure;
         ax = axes;
-        C = log(abs(reshape(A(:, leftOut(1))' * A, grid_size, grid_size)));
+        ANorm = A ./ vecnorm(A);
+        C = log(abs(reshape(ANorm(:, leftOut(1))' * ANorm, grid_size, grid_size)));
         imagesc(ax, C);
         title('$\log{|a_e^H A|}$', 'Interpreter', 'latex');
         hold on;

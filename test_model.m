@@ -115,8 +115,8 @@ daspect([1, 1, 1]);
 % Plot correlation in space domain
 figure;
 ANorm = A ./ vecnorm(A);
-pivotI = scatterer_grid_size / 2;
-pivotJ = scatterer_grid_size / 2;
+pivotI = floor(scatterer_grid_size / 2 + 1/2);
+pivotJ = floor(scatterer_grid_size / 2 + 1/2);
 pivot = (pivotI - 1) * scatterer_grid_size + pivotJ;
 correlations = abs(ANorm(:, pivot)' * ANorm);
 imagesc(reshape(correlations, scatterer_grid_size, scatterer_grid_size));
@@ -180,8 +180,8 @@ daspect([1, 1, 1]);
 % Plot correlation in frequency domain
 figure;
 ANorm = AiF ./ vecnorm(AiF);
-pivotI = scatterer_grid_size / 2;
-pivotJ = scatterer_grid_size / 2;
+pivotI = floor(scatterer_grid_size / 2 + 1 / 2);
+pivotJ = floor(scatterer_grid_size / 2 + 1 / 2);
 pivot = (pivotI - 1) * scatterer_grid_size + pivotJ;
 correlations = abs(ANorm(:, pivot)' * ANorm);
 imagesc(reshape(correlations, scatterer_grid_size, scatterer_grid_size));
