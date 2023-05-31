@@ -7,5 +7,7 @@ rxInd = rxInd(:);
 
 A = A((repelem(txInd, length(rxInd), 1) - 1) * numRX + repmat(rxInd, length(txInd), 1), :);
 
+A = A / mean(vecnorm(A));
+
 end
 

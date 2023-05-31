@@ -3,7 +3,7 @@ function [xHat, S] = omp(y, A, tol, rtol)
 arguments
     y; A;
     tol = 1e-10;
-    rtol = 1e-3;
+    rtol = 1e-10;
 end
 % Initialize algorithm
 xHat = zeros(size(A, 2), 1);
@@ -11,7 +11,7 @@ S = [];
 
 % Begin
 i = 0;
-while any(abs(y - A * xHat) ./ abs(y) > tol)
+while any(abs(y - A * xHat) > tol)
     i = i + 1;
 
     % Get index of smallest error 
