@@ -5,11 +5,12 @@ arguments
     complex = false;
 end
 x = zeros(N, 1);
-support = randperm(rStr, N, s);
+support = find(rand(rStr, N, 1) < s);
+suppSize = size(support, 1);
 if complex
-    x(support) = 1 / sqrt(2) * (randn(rStr, s, 1) + 1i * randn(rStr, s, 1));
+    x(support) = 1 / sqrt(2) * (randn(rStr, suppSize, 1) + 1i * randn(rStr, suppSize, 1));
 else
-    x(support) = randn(rStr, s, 1);
+    x(support) = randn(rStr, suppSize, 1);
 end
 end
 

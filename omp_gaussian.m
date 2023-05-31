@@ -6,7 +6,7 @@ rStr = RandStream('mcg16807', 'Seed', 0);
 nIter = 1000;
 N = 1024;
 M = 400;
-s = 102;
+s = 0.1;
 
 right = 0;
 

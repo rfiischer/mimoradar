@@ -90,6 +90,7 @@ for i = 1:size(scattererPoints, 1)
     A(:, i) = kron(a(:, i), b(:, i));
 
 end
+A = A / mean(vecnorm(A));
 
 % Compare with function 
 [txPointsF, rxPointsF, scattererPointsF] = generate_setup(antenna_spacing, num_antennas, ...
@@ -193,7 +194,7 @@ fprintf('Coherence of A after ifft: %f\n', coherence(AiF));
 
 % Generate signal vector x 
 N = size(AiF, 2);
-s = floor(sparsity * N);
+s = sparsity;
 [x, support] = sparse_x(rStr, N, s, true);
 
 % Sample

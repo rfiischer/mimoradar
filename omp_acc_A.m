@@ -31,7 +31,7 @@ iF = gen_iF(scatterer_grid_size);
 AiF = A * iF;
 
 N = size(AiF, 2);
-s = 102;
+s = 0.1;
 step = 2;
 start = 8;
 stop = 32;

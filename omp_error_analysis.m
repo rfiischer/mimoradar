@@ -5,7 +5,7 @@ random_seed = 'shuffle';        % 'shuffle' for random; any int for reproducibil
 nIter = 1000;                   % number of attempts 
 directory = 'A_database//';     % experiment identifier 
 Neff = 20;                      % effective number of antennas
-s = 102;                        % sparsity
+s = 0.1;                        % sparsity
 grid_size = 32;                 % scatterer grid size
 
 % Random generator
