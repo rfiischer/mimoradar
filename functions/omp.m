@@ -1,8 +1,9 @@
-function [xHat, S] = omp(y, A, tol)
+function [xHat, S] = omp(y, A, tol, rtol)
 %OMP Performs OMP given measurements vector y and sensing matrix A
 arguments
     y; A;
-    tol = 1e-10;
+    tol = 1e-5;
+    rtol = 1e-3;
 end
 % Initialize algorithm
 xHat = zeros(size(A, 2), 1);
@@ -10,16 +11,7 @@ S = [];
 
 % Begin
 i = 0;
-
-% We use 'all' instead of 'any' because usually when OMP finds the right
-% solution, in the same iteration that all(abs(y - A * xHat) > tol) becomes
-% false so does the statement any(abs(y - A * xHat) > tol), that means as
-% soon as one entry is minimized so are the others
-
-% Doing this we can stop OMP at fewer iterations, since for the cases a
-% mistake happens it is not worth checking until any(...) is false
-
-while all(abs(y - A * xHat) > tol) && (i < size(A, 1))
+while any(abs(y - A * xHat) > tol)
     i = i + 1;
 
     % Get index of smallest error 
@@ -40,6 +32,10 @@ while all(abs(y - A * xHat) > tol) && (i < size(A, 1))
     xHat = zeros(size(xHat));
     
     Ast = As' * As;
+    if rcond(Ast) < rtol
+        break
+    end
+
     At = Ast \ As';
     xHat(S(1:i)) = At * y;
 
