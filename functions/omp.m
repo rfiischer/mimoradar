@@ -1,7 +1,8 @@
-function [xHat, S] = omp(y, A, tol, rtol)
+function [xHat, S] = omp(y, A, post_process, tol, rtol)
 %OMP Performs OMP given measurements vector y and sensing matrix A
 arguments
     y; A;
+    post_process = @(x, y)(x);
     tol = 1e-5;
     rtol = 1e-3;
 end
@@ -28,17 +29,22 @@ while any(abs(y - A * xHat) > tol)
     end
 
     % Perform LS approximation
-    As = A(:, S(1:i));
-    xHat = zeros(size(xHat));
-    
-    Ast = As' * As;
-    if rcond(Ast) < rtol
-        break
+    [zHat, stop] = ls_approximation(A, S, y, rtol);
+    if stop
+        S = S(1:end-1);
+        break;
+    else
+        xHat = zeros(size(A, 2), 1);
+        xHat(S) = zHat;
     end
 
-    At = Ast \ As';
-    xHat(S(1:i)) = At * y;
-
 end
+
+% Apply post processing into the estimated support 
+S = post_process(S, sqrt(size(A, 2)));
+[zHat, ~] = ls_approximation(A, S, y, 0);
+xHat = zeros(size(A, 2), 1);
+xHat(S) = zHat;
+
 end
 

@@ -8,6 +8,7 @@ Neff = 20;                      % effective number of antennas
 s = 0.1;                        % sparsity
 grid_size = 32;                 % scatterer grid size
 animation_start_idx = 0;
+post_process = @fill_gap;       % post processing function
 
 % Random generator
 rStr = RandStream('mcg16807', 'Seed', random_seed);
@@ -27,7 +28,7 @@ for i = 1:nIter
     y = A * x;
     
     % Perform OMP
-    [xHat, suppHat] = omp(y, A);
+    [xHat, suppHat] = omp(y, A, post_process);
     error = sum(abs(xHat - x) .^ 2);
     
     fprintf('Error = %f\n', error);
