@@ -16,6 +16,7 @@ nIter = 1000;                   % number of attempts
 sim_type = 'best';              % choose between 'best' to compute the best
                                 % and average performance, or 'random' to
                                 % make A random
+post_process = @fill_gap;       % post processing function
 nSearchIter = 1000;             % how many iterations of random search for good A
 experimentIdx = 0;              % experiment identifier 
 
@@ -82,8 +83,8 @@ for Neff = start:step:stop
             y2 = AMean * x;
         
             % Perform OMP
-            [xHat1, ~] = omp(y1, ACand);
-            [xHat2, ~] = omp(y2, AMean);
+            [xHat1, ~] = omp(y1, ACand, post_process);
+            [xHat2, ~] = omp(y2, AMean, post_process);
             error1 = sum(abs(xHat1 - x) .^ 2);
             error2 = sum(abs(xHat2 - x) .^ 2);
         
@@ -117,7 +118,7 @@ for Neff = start:step:stop
             y = ATrim * x;
         
             % Perform OMP
-            [xHat, ~] = omp(y, ATrim);
+            [xHat, ~] = omp(y, ATrim, post_process);
             error = sum(abs(xHat - x) .^ 2);
         
             if error < 1e-10
