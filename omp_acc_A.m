@@ -19,6 +19,7 @@ sim_type = 'best';              % choose between 'best' to compute the best
 post_process = @fill_gap;       % post processing function
 nSearchIter = 1000;             % how many iterations of random search for good A
 experimentIdx = 0;              % experiment identifier 
+description = 'default';        % simulation description 
 
 % Random generator
 rStr = RandStream('mcg16807', 'Seed', random_seed);
@@ -99,7 +100,8 @@ for Neff = start:step:stop
     
         accuracy(M, 1) = right1 / nIter;
         accuracy(M, 2) = right2 / nIter;
-        save(fileName, 'nIter', 'N', 's', 'accuracy', 'step', 'start', 'stop', 'Neff');
+        save(fileName, 'nIter', 'N', 's', 'accuracy', 'step', 'start', 'stop', ...
+            'description', 'experimentIdx');
 
     else
 
@@ -127,7 +129,8 @@ for Neff = start:step:stop
         end
     
         accuracy(M) = right1 / nIter;
-        save(fileName, 'nIter', 'N', 's', 'accuracy', 'step', 'start', 'stop');
+        save(fileName, 'nIter', 'N', 's', 'accuracy', 'step', 'start', 'stop', ...
+            'description', 'experimentIdx');
 
     end
 
