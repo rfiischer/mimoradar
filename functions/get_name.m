@@ -13,5 +13,7 @@ while exist(candidateName, 'file')
     i = i + 1;
 end
 
+save(candidateName, 'i');
+
 end
 

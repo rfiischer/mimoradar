@@ -101,7 +101,7 @@ for i = 1:nIter
     
     end
 
-    waitfor(f1);
-    waitfor(f2);
+    close(f1);
+    close(f2);
 
 end
