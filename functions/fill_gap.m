@@ -1,7 +1,8 @@
 function S = fill_gap(S, grid_size)
 %FILL_GAP Finds gaps inside sequences in S and fills them
 
-templates = {[2, 2, 1, 2, 2], [2, 2, 1, 2], [2, 1, 2, 2]};
+templates = {[2, 2, 1, 2, 2], [2, 2, 1, 2], [2, 1, 2, 2], ...
+    [2, 2, 1, 1, 2, 2]};
 
 sPattern = ones(grid_size ^ 2, 1);
 sPattern(S) = 2;
