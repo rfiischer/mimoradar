@@ -6,16 +6,16 @@ fileName = get_name(mName);
 
 % Default parameters
 random_seed = 'shuffle';        % 'shuffle' for random; any int for reproducibility
-nIter = 10;                   % number of attempts 
+nIter = 1000;                   % number of attempts 
 post_process = @fill_gap;       % post processing function
-experimentIdx = 6;              % experiment identifier 
+experimentIdx = 4;              % experiment identifier 
 description = 'default';        % simulation description 
 
 % Simulation parameters 
 s = 0.1;
 step = 2;
-start = 24;
-stop = 26;
+start = 8;
+stop = 32;
 
 % Random generator
 rStr = RandStream('mcg16807', 'Seed', random_seed);
