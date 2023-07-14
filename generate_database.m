@@ -40,7 +40,7 @@ for Neff = start:step:stop
 
     M = Neff ^ 2;
     fileNameA = fullfile(baseName, sprintf('A_%d.mat', Neff));
-    [ACand, AMean] = random_search_A(rStr, AiF, numRX, num_antennas, Neff, nSearchIter, ...
-        fileNameA, true, @too_close);
+    [ACand, AMean] = random_search_A(rStr, AiF, numRX, Neff, nSearchIter, ...
+        fileNameA, 0.1, 0.4, 0.4, true, @how_close);
 
 end
