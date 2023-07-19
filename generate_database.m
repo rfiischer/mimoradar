@@ -33,7 +33,8 @@ if ~exist(baseName, 'dir')
 end
 save(fullfile(baseName, 'parameters.mat'), ...
     'lambda', 'scatterer_grid_size', 'scatterer_spacing', 'grid_height', ...
-    'num_antennas', 'antenna_spacing', 'random_seed', 'nSearchIter')
+    'num_antennas', 'antenna_spacing', 'random_seed', 'nSearchIter', ...
+    'q');
 
 for Neff = start:step:stop
     fprintf('M = %d', Neff ^ 2)
@@ -41,6 +42,6 @@ for Neff = start:step:stop
     M = Neff ^ 2;
     fileNameA = fullfile(baseName, sprintf('A_%d.mat', Neff));
     [ACand, AMean] = random_search_A(rStr, AiF, numRX, Neff, nSearchIter, ...
-        fileNameA, 0.0, 0.4, 0.4, true, @how_close);
+        fileNameA, q, true, @how_close);
 
 end
