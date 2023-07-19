@@ -68,20 +68,23 @@ for i = 1:numIter
     m2Quantile = quantile(metric(1:i, 2), q3);
 
     % Check for the best
+    
     if (coValue <= coQuantile) && (m1Value <= m1Quantile) && (m2Value <= m2Quantile)
         minCoCand = coValue;
         minM1Cand = m1Value;
         minM2Cand = m2Value;
         ACand = ATrim;
-        if fileName
-            save(fileName, 'numRX', 'num_eff_antennas', 'numIter', ...
-                'q1', 'q2', 'q3', 'metric_function', ...
-                'minCoCand', 'minM1Cand', 'minM2Cand', ...
-                'meanCoCand', 'meanM1Cand', 'meanM2Cand', ...
-                'ACand', 'AMean', 'i');
-        end
     end
     
 end
+
+if fileName
+    save(fileName, 'numRX', 'num_eff_antennas', 'numIter', ...
+        'q1', 'q2', 'q3', 'metric_function', ...
+        'minCoCand', 'minM1Cand', 'minM2Cand', ...
+        'meanCoCand', 'meanM1Cand', 'meanM2Cand', ...
+        'ACand', 'AMean', 'i');
+end
+
 end
 
