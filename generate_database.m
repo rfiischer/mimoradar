@@ -10,6 +10,7 @@ antenna_spacing = 14/45;        % antenna spacing (cm)
 random_seed = 'shuffle';        % 'shuffle' for random; any int for reproducibility
 nSearchIter = 1000;             % how many iterations of random search for good A
 experimentIdx = 4;              % experiment identifier 
+q = 0.4;                        % adjacent antenna quantile 
 
 start = 8;
 step = 2;
